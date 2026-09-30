@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+
+  <!-- পেজের মূল তথ্য -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Al Amin — Portfolio</title>
+
+  <!-- গুগল ফন্ট: Space Grotesk (হেডিং) এবং Inter (বডি) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@400;500&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    /* ===== কাস্টম প্রপার্টি (রঙ, ফন্ট, স্পেসিং) ===== */
+    :root {
+      --bg:        #0A0E1A;   /* পেজের পেছনের গাঢ় নীল-কালো রঙ */
+      --surface:   #111827;   /* কার্ডের ব্যাকগ্রাউন্ড */
+      --border:    #1E2A3A;   /* সূক্ষ্ম বর্ডার রঙ */
+      --text:      #E2EAF4;   /* মূল টেক্সট রঙ */
+      --muted:     #5A7290;   /* হালকা/সেকেন্ডারি টেক্সট */
+      --accent:    #38BDF8;   /* আকাশি নীল অ্যাকসেন্ট */
+      --accent-dim:#0EA5E9;   /* অ্যাকসেন্টের একটু গাঢ় ভার্শন */
+
+      --font-head: 'Space Grotesk', sans-serif;
+      --font-body: 'Inter', sans-serif;
+
+      --max-w: 780px;         /* কন্টেন্ট সর্বোচ্চ প্রস্থ */
+      --gap:   2.5rem;        /* সেকশনের মধ্যে ফাঁক */
+    }
+
+    /* ===== রিসেট ও বেস স্টাইল ===== */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* স্মুথ স্ক্রলিং, রিডিউসড-মোশন রেসপেক্ট */
+    html {
+      scroll-behavior: smooth;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 1rem;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ===== কন্টেন্ট মাঝে রাখার র‍্যাপার ===== */
+    .container {
+      width: 90%;           /* মোবাইলে দুইদিকে ১০% ফাঁক */
+      max-width: var(--max-w);
+      margin: 0 auto;
+    }
+
+    /* ===== লিঙ্ক স্টাইল ===== */
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    /* কিবোর্ড ফোকাস রিং (অ্যাক্সেসিবিলিটি) */
+    a:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+      border-radius: 2px;
+    }
+
+    /* ===== টপ নেভ ===== */
+    header {
+      padding: 1.4rem 0 1.2rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    /* লোগো / নামের ছোট ভার্শন */
+    .nav-logo {
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--text);
+      letter-spacing: -.01em;
+    }
+    .nav-logo span {
+      color: var(--accent);
+    }
+    /* নেভ লিঙ্কগুলো */
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 1.8rem;
+    }
+    .nav-links a {
+      font-size: .875rem;
+      font-weight: 500;
+      color: var(--muted);
+      letter-spacing: .01em;
+      transition: color .15s;
+    }
+    .nav-links a:hover {
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    /* মোবাইলে নেভ ছোট হয় */
+    @media (max-width: 480px) {
+      .nav-links { gap: 1.1rem; }
+      .nav-links a { font-size: .8rem; }
+    }
+
+    /* ===== HERO সেকশন ===== */
+    #hero {
+      padding: 5rem 0 4rem;
+    }
+    /* ছোট লেবেল — টার্মিনাল প্রম্পটের মতো */
+    .hero-eyebrow {
+      font-family: 'Space Grotesk', monospace;
+      font-size: .8rem;
+      color: var(--accent);
+      letter-spacing: .08em;
+      margin-bottom: 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: .4rem;
+    }
+    .prompt-symbol {
+      opacity: .6;
+    }
+    /* বড় নাম — টাইপ-আউট অ্যানিমেশন */
+    .hero-name {
+      font-family: var(--font-head);
+      font-size: clamp(2.4rem, 6vw, 3.8rem);  /* রেসপন্সিভ সাইজ */
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -.025em;
+      color: var(--text);
+      margin-bottom: 1.1rem;
+      white-space: nowrap;
+      overflow: hidden;
+      /* টাইপরাইটার ইফেক্টের জন্য */
+      border-right: 3px solid var(--accent);
+      width: 0;   /* JavaScript-এ বড় করা হবে */
+      animation:
+        type-name  1.4s steps(8, end) .3s forwards,
+        blink-caret  .75s step-end 1.7s 6;      /* কার্সার ৬ বার ব্লিঙ্ক করবে */
+    }
+    /* কার্সার ব্লিঙ্ক */
+    @keyframes blink-caret {
+      50% { border-color: transparent; }
+    }
+    /* নামের টাইপিং */
+    @keyframes type-name {
+      from { width: 0; }
+      to   { width: 7ch; } /* "Al Amin" = ৭ অক্ষর */
+    }
+    /* অ্যানিমেশন শেষে কার্সার লুকিয়ে যায় */
+    @keyframes hide-caret {
+      to { border-color: transparent; }
+    }
+
+    /* এক লাইনের ট্যাগলাইন */
+    .hero-tagline {
+      font-size: 1.15rem;
+      color: var(--muted);
+      max-width: 52ch;
+      line-height: 1.6;
+      margin-bottom: 2rem;
+    }
+    .hero-tagline strong {
+      color: var(--text);
+      font-weight: 500;
+    }
+    /* CTA বাটন */
+    .btn {
+      display: inline-block;
+      padding: .65rem 1.5rem;
+      background: transparent;
+      border: 1.5px solid var(--accent);
+      border-radius: 4px;
+      color: var(--accent);
+      font-family: var(--font-head);
+      font-size: .9rem;
+      font-weight: 600;
+      letter-spacing: .02em;
+      transition: background .15s, color .15s;
+    }
+    .btn:hover {
+      background: var(--accent);
+      color: var(--bg);
+      text-decoration: none;
+    }
+
+    /* ===== সেকশনের সাধারণ স্টাইল ===== */
+    section {
+      padding: 3.5rem 0;
+      border-top: 1px solid var(--border);
+    }
+    .section-label {
+      font-family: var(--font-head);
+      font-size: .72rem;
+      font-weight: 600;
+      color: var(--accent);
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      margin-bottom: 1.8rem;
+    }
+    h2.section-title {
+      font-family: var(--font-head);
+      font-size: 1.6rem;
+      font-weight: 700;
+      letter-spacing: -.02em;
+      color: var(--text);
+      margin-bottom: .6rem;
+    }
+    .section-desc {
+      color: var(--muted);
+      font-size: .95rem;
+      max-width: 58ch;
+      margin-bottom: 2rem;
+    }
+
+    /* ===== স্কিল সেকশন ===== */
+    /* স্কিলগুলো গ্রুপে ভাগ করা */
+    .skill-group {
+      margin-bottom: 1.8rem;
+    }
+    .skill-group-name {
+      font-size: .78rem;
+      font-weight: 500;
+      color: var(--muted);
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      margin-bottom: .75rem;
+    }
+    /* ট্যাগ-স্টাইল স্কিল আইটেম */
+    .skill-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .5rem;
+    }
+    .skill-tag {
+      display: inline-block;
+      padding: .3rem .85rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      font-family: var(--font-head);
+      font-size: .82rem;
+      font-weight: 600;
+      color: var(--text);
+      letter-spacing: .01em;
+    }
+    /* সাইবার স্কিল হাইলাইট */
+    .skill-tag.accent {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(56, 189, 248, .07);
+    }
+
+    /* ===== প্রজেক্ট সেকশন ===== */
+    .projects-grid {
+      display: grid;
+      gap: 1.2rem;
+    }
+    /* প্রজেক্ট কার্ড */
+    .project-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1.4rem 1.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    /* খালি স্টেট — এখনো প্রজেক্ট নেই */
+    .project-empty {
+      text-align: center;
+      padding: 3rem 1rem;
+      background: var(--surface);
+      border: 1px dashed var(--border);
+      border-radius: 6px;
+    }
+    .project-empty p {
+      color: var(--muted);
+      font-size: .9rem;
+      margin-top: .5rem;
+    }
+    .project-empty .icon {
+      font-size: 1.6rem;
+      opacity: .4;
+    }
+
+    /* ===== যোগাযোগ সেকশন ===== */
+    .contact-block {
+      display: flex;
+      flex-direction: column;
+      gap: .9rem;
+    }
+    .contact-item {
+      display: flex;
+      align-items: baseline;
+      gap: .75rem;
+    }
+    .contact-key {
+      font-size: .78rem;
+      font-weight: 500;
+      color: var(--muted);
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      width: 5rem;        /* সব লাইন একসাথে অ্যালাইন করতে */
+      flex-shrink: 0;
+    }
+    .contact-val {
+      font-size: .95rem;
+      color: var(--text);
+    }
+    .contact-val a {
+      color: var(--text);
+    }
+    .contact-val a:hover {
+      color: var(--accent);
+    }
+
+    /* ===== ফুটার ===== */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 1.6rem 0;
+      text-align: center;
+    }
+    footer p {
+      font-size: .78rem;
+      color: var(--muted);
+    }
+
+    /* ===== মোবাইল রেসপন্সিভনেস ===== */
+    @media (max-width: 600px) {
+      #hero { padding: 3.5rem 0 3rem; }
+      section { padding: 2.5rem 0; }
+      .hero-name {
+        font-size: clamp(2rem, 10vw, 2.4rem);
+        /* ছোট স্ক্রিনে অ্যানিমেশন চওড়া কমে */
+        animation:
+          type-name-sm 1.4s steps(8, end) .3s forwards,
+          blink-caret  .75s step-end 1.7s 6;
+      }
+      @keyframes type-name-sm {
+        from { width: 0; }
+        to   { width: 7ch; }
+      }
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- ===== নেভিগেশন ===== -->
+  <header>
+    <div class="container">
+      <nav class="nav">
+        <!-- লোগো: নামের ছোট ভার্শন -->
+        <span class="nav-logo">Al<span>.</span>Amin</span>
+        <!-- সেকশনের লিঙ্ক -->
+        <ul class="nav-links">
+          <li><a href="#about">About</a></li>
+          <li><a href="#skills">Skills</a></li>
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ===== হিরো সেকশন: প্রথমেই দেখা যায় ===== -->
+  <section id="hero" style="border-top: none;">
+    <div class="container">
+
+      <!-- টার্মিনাল প্রম্পট — coder পরিচয় বোঝায় -->
+      <div class="hero-eyebrow">
+        <span class="prompt-symbol">~/portfolio</span>
+        <span>$</span>
+      </div>
+
+      <!-- নামটা টাইপ হয়ে আসে -->
+      <h1 class="hero-name" aria-label="Al Amin">Al Amin</h1>
+
+      <!-- এক লাইনে পরিচয় -->
+      <p class="hero-tagline">
+        <strong>CSE graduate</strong> exploring the intersections of
+        networking, security, and code — currently pursuing an
+        <strong>M.Sc. in Cyber Security</strong>.
+      </p>
+
+      <!-- প্রজেক্ট সেকশনে নিয়ে যায় -->
+      <a href="#projects" class="btn">View projects</a>
+
+    </div>
+  </section>
+
+  <!-- ===== পরিচিতি সেকশন ===== -->
+  <section id="about">
+    <div class="container">
+      <!-- সেকশনের ছোট লেবেল -->
+      <p class="section-label">About</p>
+      <h2 class="section-title">Who I am</h2>
+      <p style="max-width: 62ch; color: var(--muted); line-height: 1.8;">
+        I'm Al Amin, a CSE graduate based in Bangladesh currently deepening my
+        knowledge in Cyber Security at the postgraduate level. I'm building
+        skills across network defense, machine learning, and secure software
+        development — and just starting to turn ideas into working code through
+        vibe coding.
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== স্কিল সেকশন ===== -->
+  <section id="skills">
+    <div class="container">
+      <p class="section-label">Skills</p>
+      <h2 class="section-title">What I work with</h2>
+
+      <!-- প্রথম গ্রুপ: সিকিউরিটি -->
+      <div class="skill-group">
+        <p class="skill-group-name">Cyber Security</p>
+        <div class="skill-tags">
+          <span class="skill-tag accent">Network Security</span>
+          <span class="skill-tag accent">Phishing Detection</span>
+          <span class="skill-tag accent">OSINT</span>
+          <span class="skill-tag accent">Threat Analysis</span>
+        </div>
+      </div>
+
+      <!-- দ্বিতীয় গ্রুপ: প্রোগ্রামিং -->
+      <div class="skill-group">
+        <p class="skill-group-name">Programming</p>
+        <div class="skill-tags">
+          <span class="skill-tag">Python</span>
+          <span class="skill-tag">JavaScript</span>
+          <span class="skill-tag">HTML &amp; CSS</span>
+          <span class="skill-tag">Bash</span>
+        </div>
+      </div>
+
+      <!-- তৃতীয় গ্রুপ: টুলস -->
+      <div class="skill-group">
+        <p class="skill-group-name">Tools &amp; Platforms</p>
+        <div class="skill-tags">
+          <span class="skill-tag">Git</span>
+          <span class="skill-tag">Linux</span>
+          <span class="skill-tag">Scikit-learn</span>
+          <span class="skill-tag">Wireshark</span>
+          <span class="skill-tag">VS Code</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== প্রজেক্ট সেকশন (এখন ফাঁকা) ===== -->
+  <section id="projects">
+    <div class="container">
+      <p class="section-label">Projects</p>
+      <h2 class="section-title">Things I've built</h2>
+      <p class="section-desc">Work in progress — projects will appear here soon.</p>
+
+      <!-- খালি অবস্থার মেসেজ -->
+      <div class="project-empty">
+        <div class="icon">⬜</div>
+        <p>No projects added yet. Check back soon.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== যোগাযোগ সেকশন ===== -->
+  <section id="contact">
+    <div class="container">
+      <p class="section-label">Contact</p>
+      <h2 class="section-title">Get in touch</h2>
+      <p class="section-desc" style="margin-bottom: 1.6rem;">
+        Open to research collaborations, internship opportunities, and interesting conversations.
+      </p>
+
+      <!-- যোগাযোগের তথ্য -->
+      <div class="contact-block">
+        <div class="contact-item">
+          <span class="contact-key">Email</span>
+          <!-- ইমেইল বসাও এখানে -->
+          <span class="contact-val"><a href="mailto:your@email.com">your@email.com</a></span>
+        </div>
+        <div class="contact-item">
+          <span class="contact-key">GitHub</span>
+          <!-- গিটহাব লিঙ্ক বসাও -->
+          <span class="contact-val"><a href="https://github.com/" target="_blank" rel="noopener">github.com/yourusername</a></span>
+        </div>
+        <div class="contact-item">
+          <span class="contact-key">LinkedIn</span>
+          <!-- LinkedIn লিঙ্ক বসাও -->
+          <span class="contact-val"><a href="https://linkedin.com/" target="_blank" rel="noopener">linkedin.com/in/yourusername</a></span>
+        </div>
+        <div class="contact-item">
+          <span class="contact-key">Location</span>
+          <span class="contact-val">Dhaka, Bangladesh</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== ফুটার ===== -->
+  <footer>
+    <div class="container">
+      <!-- কপিরাইট লাইন -->
+      <p>Built by Al Amin &mdash; 2026</p>
+    </div>
+  </footer>
+
+</body>
+</html>
