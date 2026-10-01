@@ -409,6 +409,60 @@
       color: var(--accent);
     }
 
+    /* ===== সার্টিফাইড স্কিলস — 3D অ্যানিমেটেড বার ===== */
+    .skillbars {
+      display: flex;
+      flex-direction: column;
+      gap: .9rem;
+      perspective: 600px;
+    }
+    .skillbar {
+      display: grid;
+      grid-template-columns: 220px 1fr 46px;
+      align-items: center;
+      gap: .8rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: .6rem 1rem;
+      transition: transform .2s ease, border-color .2s ease;
+      transform-style: preserve-3d;
+    }
+    .skillbar:hover {
+      transform: translateZ(14px) rotateX(3deg);
+      border-color: var(--accent);
+    }
+    .skillbar-name {
+      font-size: .82rem;
+      font-weight: 500;
+      color: var(--text);
+    }
+    .skillbar-track {
+      height: 8px;
+      background: var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .skillbar-fill {
+      height: 100%;
+      width: 0;
+      border-radius: 4px;
+      background: linear-gradient(90deg, #0EA5E9, #38BDF8, #7DD3FC);
+      box-shadow: 0 0 10px rgba(56,189,248,.6);
+      transition: width 1.4s cubic-bezier(.2,.8,.2,1);
+    }
+    .skillbar-pct {
+      font-family: var(--font-head);
+      font-size: .76rem;
+      font-weight: 600;
+      color: var(--accent);
+      text-align: right;
+    }
+    @media (max-width: 600px) {
+      .skillbar { grid-template-columns: 1fr 60px; }
+      .skillbar-track { grid-column: 1 / -1; }
+    }
+
     /* ===== এডুকেশন রোডম্যাপ ===== */
     .roadmap {
       position: relative;
@@ -768,29 +822,84 @@
       <div class="roadmap">
         <div class="roadmap-line"></div>
 
-        <!-- মাইলফলক ১ -->
+        <!-- মাইলফলক ১: JSC -->
         <div class="roadmap-item">
           <div class="roadmap-dot"></div>
           <div class="roadmap-card" data-tilt>
-            <p class="roadmap-year">2019 — 2023</p>
-            <p class="roadmap-title">🎓 B.Sc. in Computer Science &amp; Engineering</p>
-            <p class="roadmap-place">Institute Name, Dhaka, Bangladesh</p>
-            <p class="roadmap-desc">Foundations of programming, networking, and databases. Built the first versions of my web and security projects.</p>
+            <p class="roadmap-year">2013</p>
+            <p class="roadmap-title">🏫 Junior School Certificate (JSC)</p>
+            <p class="roadmap-place">B.A.F. Shaheen College, Jessore · Board: Jessore</p>
+            <p class="roadmap-desc">Science group — <strong style="color:var(--accent);">GPA 5.00 / 5.00</strong></p>
           </div>
         </div>
 
-        <!-- মাইলফলক ২ -->
+        <!-- মাইলফলক ২: SSC -->
+        <div class="roadmap-item">
+          <div class="roadmap-dot"></div>
+          <div class="roadmap-card" data-tilt>
+            <p class="roadmap-year">2016</p>
+            <p class="roadmap-title">🏫 Secondary School Certificate (SSC)</p>
+            <p class="roadmap-place">B.A.F. Shaheen College, Jessore · Science Group</p>
+            <p class="roadmap-desc">Perfect score across all subjects — <strong style="color:var(--accent);">GPA 5.00 / 5.00</strong></p>
+          </div>
+        </div>
+
+        <!-- মাইলফলক ৩: Computer Training -->
+        <div class="roadmap-item">
+          <div class="roadmap-dot"></div>
+          <div class="roadmap-card" data-tilt>
+            <p class="roadmap-year">2016 · 360 Hours</p>
+            <p class="roadmap-title">💻 National Skill Standard Basic — Computer Office Application</p>
+            <p class="roadmap-place">Zeneric Karigori Proshikhan Kendro, Jessore · BTEB, Dhaka</p>
+            <p class="roadmap-desc">Certified with <strong style="color:var(--accent);">Grade A+</strong> — MS Office Suite, spreadsheet management, presentation design, internet &amp; email, troubleshooting.</p>
+          </div>
+        </div>
+
+        <!-- মাইলফলক ৪: HSC -->
+        <div class="roadmap-item">
+          <div class="roadmap-dot"></div>
+          <div class="roadmap-card" data-tilt>
+            <p class="roadmap-year">2018</p>
+            <p class="roadmap-title">🏫 Higher Secondary Certificate (HSC)</p>
+            <p class="roadmap-place">Cantonment College, Jessore · Science Group</p>
+            <p class="roadmap-desc"><strong style="color:var(--accent);">GPA 4.50 / 5.00</strong> — A+ in Physics, Chemistry, Higher Math &amp; ICT. Participated in 8th Bangladesh Chemistry Olympiad.</p>
+          </div>
+        </div>
+
+        <!-- মাইলফলক ৫: BSc -->
+        <div class="roadmap-item">
+          <div class="roadmap-dot"></div>
+          <div class="roadmap-card" data-tilt>
+            <p class="roadmap-year">2019 — 2024</p>
+            <p class="roadmap-title">🎓 B.Sc. in Computer Science &amp; Engineering</p>
+            <p class="roadmap-place">Daffodil International University, Dhaka · ID: 192-15-13174</p>
+            <p class="roadmap-desc">Degree conferred March 2024 — <strong style="color:var(--accent);">CGPA 3.45 / 4.00</strong>. Key coursework: Machine Learning, AI, Computer Networks, Information Security, Web Engineering, Big Data &amp; IoT.</p>
+          </div>
+        </div>
+
+        <!-- মাইলফলক ৬: Internship -->
+        <div class="roadmap-item">
+          <div class="roadmap-dot"></div>
+          <div class="roadmap-card" data-tilt>
+            <p class="roadmap-year">Aug — Dec 2024</p>
+            <p class="roadmap-title">🛡️ Cybersecurity Intern</p>
+            <p class="roadmap-place">Goinnovior Limited, Dhaka · 5 months</p>
+            <p class="roadmap-desc">Vulnerability assessments, security testing, threat &amp; risk analysis, security audit projects, and technical documentation.</p>
+          </div>
+        </div>
+
+        <!-- মাইলফলক ৭: MSc (বর্তমান) -->
         <div class="roadmap-item">
           <div class="roadmap-dot"></div>
           <div class="roadmap-card" data-tilt>
             <p class="roadmap-year">2024 — Present</p>
             <p class="roadmap-title">🛡️ M.Sc. in Cyber Security</p>
             <p class="roadmap-place">Daffodil International University (DIU), Dhaka</p>
-            <p class="roadmap-desc">Specializing in network defense and machine learning for security. Thesis: paraphrase-robust phishing email detection.</p>
+            <p class="roadmap-desc">Thesis: paraphrase-robust phishing email detection — Random Forest achieving 93.9% accuracy.</p>
           </div>
         </div>
 
-        <!-- মাইলফলক ৩ (ভবিষ্যৎ) -->
+        <!-- মাইলফলক ৮ (ভবিষ্যৎ) -->
         <div class="roadmap-item">
           <div class="roadmap-dot future"></div>
           <div class="roadmap-card future" data-tilt>
@@ -801,6 +910,45 @@
           </div>
         </div>
       </div>
+
+      <!-- সার্টিফাইড স্কিলস — 3D অ্যানিমেটেড বার -->
+      <div style="margin-top:2.5rem;">
+        <p style="font-family:var(--font-head); font-weight:600; font-size:.85rem; color:var(--accent); letter-spacing:.06em; margin-bottom:1rem;">📊 Certified Skills — 360 Hours NSSB Training (BTEB, Grade A+)</p>
+        <div class="skillbars">
+          <div class="skillbar"><span class="skillbar-name">MS Word &amp; Document Processing</span><div class="skillbar-track"><div class="skillbar-fill" data-w="95"></div></div><span class="skillbar-pct">95%</span></div>
+          <div class="skillbar"><span class="skillbar-name">MS Excel &amp; Data Analysis</span><div class="skillbar-track"><div class="skillbar-fill" data-w="90"></div></div><span class="skillbar-pct">90%</span></div>
+          <div class="skillbar"><span class="skillbar-name">MS PowerPoint &amp; Presentation</span><div class="skillbar-track"><div class="skillbar-fill" data-w="92"></div></div><span class="skillbar-pct">92%</span></div>
+          <div class="skillbar"><span class="skillbar-name">Internet, Email &amp; Troubleshooting</span><div class="skillbar-track"><div class="skillbar-fill" data-w="94"></div></div><span class="skillbar-pct">94%</span></div>
+        </div>
+      </div>
+
+      <!-- অ্যাচিভমেন্টস কার্ড -->
+      <div style="margin-top:2.5rem;">
+        <p style="font-family:var(--font-head); font-weight:600; font-size:.85rem; color:var(--accent); letter-spacing:.06em; margin-bottom:1rem;">🏆 Achievements &amp; Recognition</p>
+        <div class="videos-grid">
+          <div class="video-card" data-tilt>
+            <div class="video-thumb" style="background:linear-gradient(135deg,#34D399,#1E2A3A);">🧪</div>
+            <p class="video-title">8th Bangladesh Chemistry Olympiad</p>
+            <p class="video-meta">Preliminary Round, Khulna Division · Jan 2018 · Govt. M.M. College, Jessore</p>
+          </div>
+          <div class="video-card" data-tilt>
+            <div class="video-thumb" style="background:linear-gradient(135deg,#F87171,#1E2A3A);">🕊️</div>
+            <p class="video-title">Certificate of Appreciation — Alokito Shishu</p>
+            <p class="video-meta">Recognized for social awareness movement · Manusher Jonno Foundation</p>
+          </div>
+          <div class="video-card" data-tilt>
+            <div class="video-thumb" style="background:linear-gradient(135deg,#FACC15,#1E2A3A);">📜</div>
+            <p class="video-title">Bengali Language Excellence Award</p>
+            <p class="video-meta">Dhanak Dohakula Udyiman Paribad · District Authority, Jessore · 2018</p>
+          </div>
+          <div class="video-card" data-tilt>
+            <div class="video-thumb" style="background:linear-gradient(135deg,#38BDF8,#1E2A3A);">🎖️</div>
+            <p class="video-title">National Skill Certificate — Grade A+</p>
+            <p class="video-meta">Computer Office Application · Bangladesh Technical Education Board</p>
+          </div>
+        </div>
+      </div>
+
 
       <!-- ইনস্টিটিউট লোকেশন — 3D ইন্টার‍্যাক্টিভ ম্যাপ -->
       <div class="map-frame" style="margin-top:2.5rem;">
@@ -1129,6 +1277,22 @@
           card.style.transform = 'rotateY(0) rotateX(0) translateZ(0)';
         });
       });
+    })();
+    /* ============================================
+       5) স্কিল বার অ্যানিমেশন (স্ক্রলে চালু হয়)
+       ============================================ */
+    (function () {
+      const bars = document.querySelectorAll('.skillbar-fill');
+      const barObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const fill = entry.target;
+            fill.style.width = fill.dataset.w + '%';
+            barObserver.unobserve(fill);
+          }
+        });
+      }, { threshold: 0.4 });
+      bars.forEach(b => barObserver.observe(b));
     })();
   </script>
 
