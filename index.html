@@ -1316,7 +1316,7 @@
       <div class="videos-grid">
         <!-- ভিডিও ১: Cyber Security Roadmap -->
         <div class="video-card" data-tilt>
-          <div class="video-lite" data-ytid="ZgS68ii3HTo" role="button" tabindex="0" aria-label="Play Cyber Security Roadmap">
+          <div class="video-lite" data-ytid="ZgS68ii3HTo" data-autoplay="1" role="button" tabindex="0" aria-label="Play Cyber Security Roadmap">
             <img src="https://i.ytimg.com/vi/ZgS68ii3HTo/hqdefault.jpg" alt="Cyber Security Roadmap" loading="lazy" />
             <span class="lite-play">▶</span>
           </div>
@@ -1325,7 +1325,7 @@
         </div>
         <!-- ভিডিও ২: Python -->
         <div class="video-card" data-tilt>
-          <div class="video-lite" data-ytid="XKHEtdqhLK8" role="button" tabindex="0" aria-label="Play Python Full Course">
+          <div class="video-lite" data-ytid="XKHEtdqhLK8" data-autoplay="1" role="button" tabindex="0" aria-label="Play Python Full Course">
             <img src="https://i.ytimg.com/vi/XKHEtdqhLK8/hqdefault.jpg" alt="Python Full Course" loading="lazy" />
             <span class="lite-play">▶</span>
           </div>
@@ -1334,7 +1334,7 @@
         </div>
         <!-- ভিডিও ৩: Machine Learning -->
         <div class="video-card" data-tilt>
-          <div class="video-lite" data-ytid="ukzFI9rgwfU" role="button" tabindex="0" aria-label="Play Machine Learning Course">
+          <div class="video-lite" data-ytid="ukzFI9rgwfU" data-autoplay="1" role="button" tabindex="0" aria-label="Play Machine Learning Course">
             <img src="https://i.ytimg.com/vi/ukzFI9rgwfU/hqdefault.jpg" alt="Machine Learning Course" loading="lazy" />
             <span class="lite-play">▶</span>
           </div>
@@ -1343,7 +1343,7 @@
         </div>
         <!-- ভিডিও ৪: Phishing Detection -->
         <div class="video-card" data-tilt>
-          <div class="video-lite" data-ytid="V2OxstR2tEw" role="button" tabindex="0" aria-label="Play ML Phishing Detection">
+          <div class="video-lite" data-ytid="V2OxstR2tEw" data-autoplay="1" role="button" tabindex="0" aria-label="Play ML Phishing Detection">
             <img src="https://i.ytimg.com/vi/V2OxstR2tEw/hqdefault.jpg" alt="ML Phishing Detection" loading="lazy" />
             <span class="lite-play">▶</span>
           </div>
@@ -1675,18 +1675,36 @@
       bars.forEach(b => barObserver.observe(b));
     })();
     /* ============================================
-       11) Lite YouTube — ক্লিক করলেই ভিডিও লোড
+       11) Auto-run YouTube — স্ক্রলে এলেই মিউটেড ভিডিও চালু
        ============================================ */
     (function () {
-      document.querySelectorAll('.video-lite').forEach(box => {
-        function load() {
-          if (box.dataset.loaded) return;
-          box.dataset.loaded = '1';
-          box.innerHTML = '<iframe src="https://www.youtube-nocookie.com/embed/' +
-            box.dataset.ytid + '?autoplay=1&rel=0" ' +
-            'title="YouTube video" style="position:absolute; inset:0; width:100%; height:100%; border:0;" ' +
-            'allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
-        }
+      const boxes = document.querySelectorAll('.video-lite');
+      function mount(box, autoplay) {
+        if (box.dataset.loaded) return;
+        box.dataset.loaded = '1';
+        const id = box.dataset.ytid;
+        const params = autoplay
+          ? 'autoplay=1&mute=1&loop=1&playlist=' + id + '&controls=1&rel=0'
+          : 'autoplay=1&rel=0';
+        box.innerHTML = '<iframe src="https://www.youtube-nocookie.com/embed/' + id + '?' + params + '" ' +
+          'title="YouTube video" style="position:absolute; inset:0; width:100%; height:100%; border:0;" ' +
+          'allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
+      }
+      /* যেগুলোতে data-autoplay আছে — স্ক্রলে দেখা মাত্রই চালু হবে */
+      const autoBoxes = [...boxes].filter(b => b.dataset.autoplay);
+      const obs = new IntersectionObserver((entries) => {
+        entries.forEach(en => {
+          if (en.isIntersecting) {
+            mount(en.target, true);
+            obs.unobserve(en.target);
+          }
+        });
+      }, { threshold: 0.3 });
+      autoBoxes.forEach(b => obs.observe(b));
+      /* বাকিগুলো ক্লিকে চলবে */
+      boxes.forEach(box => {
+        if (box.dataset.autoplay) return;
+        function load() { mount(box, false); }
         box.addEventListener('click', load);
         box.addEventListener('keydown', (e) => { if (e.key === 'Enter') load(); });
       });
