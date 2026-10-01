@@ -600,6 +600,44 @@
       color: var(--muted);
       padding: 0 1rem 1rem;
     }
+    .video-lite {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: #000;
+      cursor: pointer;
+      overflow: hidden;
+    }
+    .video-lite img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform .35s ease, opacity .35s ease;
+    }
+    .video-lite:hover img {
+      transform: scale(1.06);
+      opacity: .85;
+    }
+    .lite-play {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 56px; height: 40px;
+      display: grid;
+      place-items: center;
+      background: rgba(239, 68, 68, .95);
+      border-radius: 10px;
+      color: #fff;
+      font-size: 1.1rem;
+      box-shadow: 0 6px 20px rgba(239,68,68,.5);
+      transition: transform .25s ease, background .25s ease;
+    }
+    .video-lite:hover .lite-play {
+      transform: translate(-50%, -50%) scale(1.15);
+      background: #ef4444;
+    }
     .video-embed {
       position: relative;
       width: 100%;
@@ -1278,32 +1316,36 @@
       <div class="videos-grid">
         <!-- ভিডিও ১: Cyber Security Roadmap -->
         <div class="video-card" data-tilt>
-          <div class="video-embed">
-            <iframe src="https://www.youtube-nocookie.com/embed/ZgS68ii3HTo?rel=0&modestbranding=1" title="Cyber Security Roadmap" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+          <div class="video-lite" data-ytid="ZgS68ii3HTo" role="button" tabindex="0" aria-label="Play Cyber Security Roadmap">
+            <img src="https://i.ytimg.com/vi/ZgS68ii3HTo/hqdefault.jpg" alt="Cyber Security Roadmap" loading="lazy" />
+            <span class="lite-play">▶</span>
           </div>
           <p class="video-title">🛡️ Cyber Security Roadmap for Beginners</p>
           <p class="video-meta">Full career path · Ethical hacking → SOC → Research</p>
         </div>
         <!-- ভিডিও ২: Python -->
         <div class="video-card" data-tilt>
-          <div class="video-embed">
-            <iframe src="https://www.youtube-nocookie.com/embed/XKHEtdqhLK8?rel=0&modestbranding=1" title="Python Full Course" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+          <div class="video-lite" data-ytid="XKHEtdqhLK8" role="button" tabindex="0" aria-label="Play Python Full Course">
+            <img src="https://i.ytimg.com/vi/XKHEtdqhLK8/hqdefault.jpg" alt="Python Full Course" loading="lazy" />
+            <span class="lite-play">▶</span>
           </div>
           <p class="video-title">🐍 Python Full Course for Beginners</p>
           <p class="video-meta">Programming foundation · Automation &amp; scripting</p>
         </div>
         <!-- ভিডিও ৩: Machine Learning -->
         <div class="video-card" data-tilt>
-          <div class="video-embed">
-            <iframe src="https://www.youtube-nocookie.com/embed/ukzFI9rgwfU?rel=0&modestbranding=1" title="Machine Learning Course" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+          <div class="video-lite" data-ytid="ukzFI9rgwfU" role="button" tabindex="0" aria-label="Play Machine Learning Course">
+            <img src="https://i.ytimg.com/vi/ukzFI9rgwfU/hqdefault.jpg" alt="Machine Learning Course" loading="lazy" />
+            <span class="lite-play">▶</span>
           </div>
           <p class="video-title">🧠 Machine Learning for Everyone</p>
           <p class="video-meta">My thesis toolkit · Random Forest, NLP basics</p>
         </div>
         <!-- ভিডিও ৪: Phishing Detection -->
         <div class="video-card" data-tilt>
-          <div class="video-embed">
-            <iframe src="https://www.youtube.com/embed/videoseries?list=PLxCzCOWd7aiGz9donHRrE9I3Mwn6XdP8p&rel=0&modestbranding=1" title="Phishing Detection Videos" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+          <div class="video-lite" data-ytid="V2OxstR2tEw" role="button" tabindex="0" aria-label="Play ML Phishing Detection">
+            <img src="https://i.ytimg.com/vi/V2OxstR2tEw/hqdefault.jpg" alt="ML Phishing Detection" loading="lazy" />
+            <span class="lite-play">▶</span>
           </div>
           <p class="video-title">📧 ML for Phishing Email Detection</p>
           <p class="video-meta">My thesis topic · Build your own classifier</p>
@@ -1632,6 +1674,24 @@
       }, { threshold: 0.4 });
       bars.forEach(b => barObserver.observe(b));
     })();
+    /* ============================================
+       11) Lite YouTube — ক্লিক করলেই ভিডিও লোড
+       ============================================ */
+    (function () {
+      document.querySelectorAll('.video-lite').forEach(box => {
+        function load() {
+          if (box.dataset.loaded) return;
+          box.dataset.loaded = '1';
+          box.innerHTML = '<iframe src="https://www.youtube-nocookie.com/embed/' +
+            box.dataset.ytid + '?autoplay=1&rel=0" ' +
+            'title="YouTube video" style="position:absolute; inset:0; width:100%; height:100%; border:0;" ' +
+            'allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
+        }
+        box.addEventListener('click', load);
+        box.addEventListener('keydown', (e) => { if (e.key === 'Enter') load(); });
+      });
+    })();
+
     /* ============================================
        10) ইস্টার এগ — কোনামি কোড (↑↑↓↓←→←→BA)
        ============================================ */
