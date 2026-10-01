@@ -778,11 +778,25 @@
         u.onend = () => { hintText.textContent = 'Play welcome voice'; };
       }
 
-      // অটো-প্লে: অনেক ব্রাউজার প্রথম ইন্টার‍্যাকশন ছাড়া ব্লক করে,
-      // তাই চেষ্টা করা হয় — ব্লক হলে ইউজার বাটনে ক্লিক করবে
+      // অটো-প্লে চেষ্টা: অনেক ব্রাউজার প্রথম ইন্টার‍্যাকশন ছাড়া ব্লক করে,
+      // তাই প্রথম ক্লিক/স্ক্রল/কি-প্রেসেও চালানোর ব্যবস্থা রাখা হলো
+      let spoken = false;
+      function speakOnce() {
+        if (spoken) return;
+        spoken = true;
+        speak();
+        document.removeEventListener('click', speakOnce);
+        document.removeEventListener('keydown', speakOnce);
+        window.removeEventListener('scroll', speakOnce);
+      }
       window.addEventListener('load', () => {
-        const trySpeak = speak;
-        trySpeak();
+        setTimeout(() => {
+          try { speak(); spoken = true; } catch (e) { spoken = false; }
+        }, 800);
+        // যদি অটো-প্লে ব্লক হয়, প্রথম ইন্টার‍্যাকশনে চালাও
+        document.addEventListener('click', speakOnce);
+        document.addEventListener('keydown', speakOnce);
+        window.addEventListener('scroll', speakOnce);
       });
 
       hint.addEventListener('click', speak);
