@@ -2,10 +2,16 @@
 <html lang="bn">
 <head>
 
-  <!-- পেজের মূল তথ্য -->
+  <!-- পেজের মূল তথ্য + SEO -->
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Al Amin — Portfolio</title>
+  <title>Al Amin — Cyber Security Researcher & Vibe Coder</title>
+  <meta name="description" content="Al Amin — MSc Cyber Security student at DIU. Phishing email detection research (93.9% accuracy), AI-assisted coding, and web projects." />
+  <meta name="keywords" content="Al Amin, Cyber Security, Phishing Detection, Machine Learning, DIU, Vibe Coding, Portfolio" />
+  <meta property="og:title" content="Al Amin — Portfolio" />
+  <meta property="og:description" content="Cyber Security Researcher · ML · Vibe Coder" />
+  <meta property="og:type" content="website" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛡️</text></svg>" />
 
   <!-- গুগল ফন্ট: Space Grotesk (হেডিং) এবং Inter (বডি) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -594,6 +600,25 @@
       color: var(--muted);
       padding: 0 1rem 1rem;
     }
+    .play-badge {
+      position: absolute;
+      right: .7rem;
+      bottom: .7rem;
+      width: 34px; height: 34px;
+      display: grid;
+      place-items: center;
+      background: rgba(239, 68, 68, .92);
+      border-radius: 50%;
+      color: #fff;
+      font-size: .8rem;
+      box-shadow: 0 4px 14px rgba(239,68,68,.5);
+      animation: pulse-play 1.8s ease-in-out infinite;
+    }
+    .video-thumb { position: relative; }
+    @keyframes pulse-play {
+      0%, 100% { transform: scale(1); box-shadow: 0 4px 14px rgba(239,68,68,.5); }
+      50% { transform: scale(1.12); box-shadow: 0 4px 22px rgba(239,68,68,.8); }
+    }
 
     /* ===== কার্টুন অ্যানিমেশন মোডাল ===== */
     .toon-modal {
@@ -823,6 +848,19 @@
 </head>
 <body>
 
+  <!-- ===== প্রিলোডার ===== -->
+  <div id="preloader" style="position:fixed; inset:0; z-index:999; background:var(--bg); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:1.2rem; transition:opacity .5s ease, visibility .5s;">
+    <div style="width:56px; height:56px; border:3px solid var(--border); border-top-color:var(--accent); border-radius:50%; animation:spin 1s linear infinite;"></div>
+    <p style="font-family:var(--font-head); font-size:.8rem; color:var(--accent); letter-spacing:.15em;">LOADING PORTFOLIO<span id="dots">...</span></p>
+    <style>@keyframes spin{to{transform:rotate(360deg)}}</style>
+  </div>
+
+  <!-- ===== কাস্টম কার্সর গ্লো ===== -->
+  <div id="cursor-glow" style="position:fixed; width:350px; height:350px; border-radius:50%; pointer-events:none; z-index:1; background:radial-gradient(circle, rgba(56,189,248,.08) 0%, transparent 65%); transform:translate(-50%,-50%); transition:left .08s ease-out, top .08s ease-out;"></div>
+
+  <!-- ===== ব্যাক-টু-টপ বাটন ===== -->
+  <button id="backTop" aria-label="Back to top" style="all:unset; cursor:pointer; position:fixed; bottom:1.2rem; left:1.2rem; z-index:98; width:44px; height:44px; display:none; place-items:center; background:var(--surface); border:1px solid var(--accent); border-radius:50%; color:var(--accent); font-size:1.1rem; box-shadow:0 0 16px rgba(56,189,248,.3); transition:transform .2s, opacity .3s;">↑</button>
+
   <!-- ===== 3D ব্যাকগ্রাউন্ড (Three.js) ===== -->
   <canvas id="bg3d"></canvas>
 
@@ -846,6 +884,7 @@
   <!-- ===== নেভিগেশন ===== -->
   <header>
     <div class="container">
+      <!-- ===== নেভিগেশন ===== -->
       <nav class="nav">
         <!-- লোগো: নামের ছোট ভার্শন -->
         <span class="nav-logo">Al<span>.</span>Amin</span>
@@ -854,6 +893,8 @@
           <li><a href="#about">About</a></li>
           <li><a href="#skills">Skills</a></li>
           <li><a href="#projects">Projects</a></li>
+          <li><a href="#education">Education</a></li>
+          <li><a href="#videos">Videos</a></li>
           <li><a href="#contact">Contact</a></li>
         </ul>
       </nav>
@@ -873,11 +914,14 @@
       <!-- নামটা টাইপ হয়ে আসে -->
       <h1 class="hero-name" aria-label="Al Amin">Al Amin</h1>
 
-      <!-- এক লাইনে পরিচয় -->
+      <!-- এক লাইনে পরিচয় + রোটেটিং টাইপিং -->
       <p class="hero-tagline">
         <strong>CSE graduate</strong> exploring the intersections of
         networking, security, and code — currently pursuing an
         <strong>M.Sc. in Cyber Security</strong>.
+      </p>
+      <p style="font-family:var(--font-head); font-size:1rem; color:var(--accent); margin:-1.2rem 0 1.8rem; min-height:1.6em;">
+        <span id="typed"></span><span id="cursor" style="animation:blink-caret .7s step-end infinite;">|</span>
       </p>
 
       <!-- প্রজেক্ট সেকশনে নিয়ে যায় -->
@@ -901,6 +945,61 @@
       </p>
     </div>
   </section>
+
+  <!-- ===== স্ট্যাট সেকশন (অ্যানিমেটেড কাউন্টার) ===== -->
+  <section id="stats" style="padding:2.5rem 0;">
+    <div class="container">
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:1rem; text-align:center;">
+        <div class="stat-box" data-tilt>
+          <p style="font-family:var(--font-head); font-size:2rem; font-weight:700; color:var(--accent);"><span data-count="93.9">0</span>%</p>
+          <p style="font-size:.76rem; color:var(--muted); letter-spacing:.06em;">PHISHING DETECTION ACCURACY</p>
+        </div>
+        <div class="stat-box" data-tilt>
+          <p style="font-family:var(--font-head); font-size:2rem; font-weight:700; color:var(--accent);"><span data-count="3.45">0</span></p>
+          <p style="font-size:.76rem; color:var(--muted); letter-spacing:.06em;">B.SC CGPA / 4.00</p>
+        </div>
+        <div class="stat-box" data-tilt>
+          <p style="font-family:var(--font-head); font-size:2rem; font-weight:700; color:var(--accent);">×2</p>
+          <p style="font-size:.76rem; color:var(--muted); letter-spacing:.06em;">PERFECT GPA 5.00 (JSC + SSC)</p>
+        </div>
+        <div class="stat-box" data-tilt>
+          <p style="font-family:var(--font-head); font-size:2rem; font-weight:700; color:var(--accent);"><span data-count="360">0</span></p>
+          <p style="font-size:.76rem; color:var(--muted); letter-spacing:.06em;">HOURS CERTIFIED TRAINING</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <style>
+    .field {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: .75rem 1rem;
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: .9rem;
+      outline: none;
+      transition: border-color .2s, box-shadow .2s;
+      resize: vertical;
+    }
+    .field:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(56,189,248,.15);
+    }
+    .stat-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.4rem 1rem;
+      transition: border-color .25s, box-shadow .25s, transform .25s;
+      transform-style: preserve-3d;
+    }
+    .stat-box:hover {
+      border-color: var(--accent);
+      box-shadow: 0 8px 24px rgba(56,189,248,.18);
+    }
+  </style>
 
   <!-- ===== স্কিল সেকশন ===== -->
   <section id="skills">
@@ -1164,29 +1263,29 @@
       <p class="section-desc">Video journeys I recommend — cyber security, vibe coding, and the road ahead.</p>
 
       <div class="videos-grid">
-        <!-- ভিডিও ১ -->
-        <a class="video-card" href="https://www.youtube.com/results?search_query=cyber+security+roadmap+beginner" target="_blank" rel="noopener">
-          <div class="video-thumb" style="background:linear-gradient(135deg,#0EA5E9,#1E2A3A);">🛡️</div>
+        <!-- ভিডিও ১: Cyber Security Roadmap -->
+        <a class="video-card" href="https://www.youtube.com/watch?v=ZgS68ii3HTo" target="_blank" rel="noopener" data-tilt>
+          <div class="video-thumb" style="background:linear-gradient(135deg,#0EA5E9,#1E2A3A);">🛡️<span class="play-badge">▶</span></div>
           <p class="video-title">Cyber Security Roadmap for Beginners</p>
-          <p class="video-meta">YouTube Playlist</p>
+          <p class="video-meta">Full career path · Ethical hacking → SOC → Research</p>
         </a>
-        <!-- ভিডিও ২ -->
-        <a class="video-card" href="https://www.youtube.com/results?search_query=python+for+cyber+security" target="_blank" rel="noopener">
-          <div class="video-thumb" style="background:linear-gradient(135deg,#FACC15,#1E2A3A);">🐍</div>
-          <p class="video-title">Python for Security &amp; Automation</p>
-          <p class="video-meta">YouTube Playlist</p>
+        <!-- ভিডিও ২: Python -->
+        <a class="video-card" href="https://www.youtube.com/watch?v=XKHEtdqhLK8" target="_blank" rel="noopener" data-tilt>
+          <div class="video-thumb" style="background:linear-gradient(135deg,#FACC15,#1E2A3A);">🐍<span class="play-badge">▶</span></div>
+          <p class="video-title">Python Full Course for Beginners</p>
+          <p class="video-meta">Programming foundation · Automation &amp; scripting</p>
         </a>
-        <!-- ভিডিও ৩ -->
-        <a class="video-card" href="https://www.youtube.com/results?search_query=ai+assisted+coding+vibe+coding" target="_blank" rel="noopener">
-          <div class="video-thumb" style="background:linear-gradient(135deg,#A78BFA,#1E2A3A);">🤖</div>
-          <p class="video-title">Vibe Coding with AI — Full Guide</p>
-          <p class="video-meta">YouTube Playlist</p>
+        <!-- ভিডিও ৩: Machine Learning -->
+        <a class="video-card" href="https://www.youtube.com/watch?v=ukzFI9rgwfU" target="_blank" rel="noopener" data-tilt>
+          <div class="video-thumb" style="background:linear-gradient(135deg,#34D399,#1E2A3A);">🧠<span class="play-badge">▶</span></div>
+          <p class="video-title">Machine Learning for Everyone</p>
+          <p class="video-meta">My thesis toolkit · Random Forest, NLP basics</p>
         </a>
-        <!-- ভিডিও ৪ -->
-        <a class="video-card" href="https://www.youtube.com/results?search_query=machine+learning+phishing+detection" target="_blank" rel="noopener">
-          <div class="video-thumb" style="background:linear-gradient(135deg,#34D399,#1E2A3A);">🧠</div>
-          <p class="video-title">ML for Phishing Detection</p>
-          <p class="video-meta">YouTube Playlist</p>
+        <!-- ভিডিও ৪: Phishing Detection -->
+        <a class="video-card" href="https://www.youtube.com/results?search_query=machine+learning+phishing+email+detection+python" target="_blank" rel="noopener" data-tilt>
+          <div class="video-thumb" style="background:linear-gradient(135deg,#F87171,#1E2A3A);">📧<span class="play-badge">▶</span></div>
+          <p class="video-title">ML for Phishing Email Detection</p>
+          <p class="video-meta">My thesis topic · Build your own classifier</p>
         </a>
       </div>
     </div>
@@ -1200,6 +1299,16 @@
       <p class="section-desc" style="margin-bottom: 1.6rem;">
         Open to research collaborations, internship opportunities, and interesting conversations.
       </p>
+
+      <!-- কন্টাক্ট ফর্ম -->
+      <form id="contactForm" action="https://formsubmit.co/eng.md.alaminjim@gmail.com" method="POST" style="margin-top:1.8rem; display:flex; flex-direction:column; gap:.8rem; max-width:520px;">
+        <input type="hidden" name="_subject" value="New message from portfolio!" />
+        <input type="hidden" name="_captcha" value="false" />
+        <input type="text" name="name" placeholder="Your Name" required class="field" />
+        <input type="email" name="email" placeholder="Your Email" required class="field" />
+        <textarea name="message" rows="4" placeholder="Your Message..." required class="field"></textarea>
+        <button type="submit" class="btn" style="align-self:flex-start;">Send Message ✉️</button>
+      </form>
 
       <!-- যোগাযোগের তথ্য (কালারফুল আইকনসহ) -->
       <div class="contact-block">
@@ -1501,6 +1610,29 @@
       bars.forEach(b => barObserver.observe(b));
     })();
     /* ============================================
+       10) ইস্টার এগ — কোনামি কোড (↑↑↓↓←→←→BA)
+       ============================================ */
+    (function () {
+      const seq = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
+      let idx = 0;
+      document.addEventListener('keydown', (e) => {
+        idx = (e.key === seq[idx]) ? idx + 1 : 0;
+        if (idx === seq.length) {
+          idx = 0;
+          /* রেইনবো পার্টি মোড! */
+          document.body.style.animation = 'rainbow-bg 2s linear infinite';
+          const style = document.createElement('style');
+          style.textContent = '@keyframes rainbow-bg{0%{filter:hue-rotate(0deg)}100%{filter:hue-rotate(360deg)}}';
+          document.head.appendChild(style);
+          setTimeout(() => {
+            document.body.style.animation = '';
+            alert('🎉 Konami unlocked! You found the easter egg, hacker!');
+          }, 4000);
+        }
+      });
+    })();
+
+    /* ============================================
        6) কার্টুন অ্যানিমেশন মোডাল
        ============================================ */
     (function () {
@@ -1610,6 +1742,87 @@
       document.getElementById('toonClose').addEventListener('click', () => modal.classList.remove('open'));
       modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('open'); });
       document.addEventListener('keydown', (e) => { if (e.key === 'Escape') modal.classList.remove('open'); });
+    })();
+    /* ============================================
+       7) প্রিলোডার + কার্সর গ্লো + ব্যাক-টু-টপ
+       ============================================ */
+    (function () {
+      /* প্রিলোডার */
+      window.addEventListener('load', () => {
+        const pre = document.getElementById('preloader');
+        setTimeout(() => {
+          pre.style.opacity = '0';
+          pre.style.visibility = 'hidden';
+        }, 500);
+      });
+
+      /* কার্সর গ্লো */
+      const glow = document.getElementById('cursor-glow');
+      document.addEventListener('mousemove', (e) => {
+        glow.style.left = e.clientX + 'px';
+        glow.style.top  = e.clientY + 'px';
+      });
+
+      /* ব্যাক-টু-টপ */
+      const btn = document.getElementById('backTop');
+      window.addEventListener('scroll', () => {
+        btn.style.display = window.scrollY > 500 ? 'grid' : 'none';
+      });
+      btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+      btn.addEventListener('mouseenter', () => btn.style.transform = 'scale(1.12)');
+      btn.addEventListener('mouseleave', () => btn.style.transform = 'scale(1)');
+    })();
+
+    /* ============================================
+       8) হিরো রোটেটিং টাইপিং অ্যানিমেশন
+       ============================================ */
+    (function () {
+      const phrases = [
+        'Cyber Security Researcher 🛡️',
+        'Vibe Coder 🤖',
+        'ML Enthusiast 🧠',
+        'Phishing Hunter 🎣',
+        'Book Author 📖'
+      ];
+      const el = document.getElementById('typed');
+      let pi = 0, ci = 0, deleting = false;
+      function tick() {
+        const cur = phrases[pi];
+        if (!deleting) {
+          el.textContent = cur.slice(0, ++ci);
+          if (ci === cur.length) { deleting = true; return setTimeout(tick, 1600); }
+        } else {
+          el.textContent = cur.slice(0, --ci);
+          if (ci === 0) { deleting = false; pi = (pi + 1) % phrases.length; return setTimeout(tick, 350); }
+        }
+        setTimeout(tick, deleting ? 40 : 75);
+      }
+      tick();
+    })();
+
+    /* ============================================
+       9) স্ট্যাট কাউন্টার অ্যানিমেশন
+       ============================================ */
+    (function () {
+      const counters = document.querySelectorAll('[data-count]');
+      const obs = new IntersectionObserver((entries) => {
+        entries.forEach(en => {
+          if (!en.isIntersecting) return;
+          const el = en.target;
+          const target = parseFloat(el.dataset.count);
+          const decimals = (el.dataset.count.split('.')[1] || '').length;
+          const dur = 1600, t0 = performance.now();
+          function step(t) {
+            const p = Math.min((t - t0) / dur, 1);
+            const eased = 1 - Math.pow(1 - p, 3);
+            el.textContent = (target * eased).toFixed(decimals);
+            if (p < 1) requestAnimationFrame(step);
+          }
+          requestAnimationFrame(step);
+          obs.unobserve(el);
+        });
+      }, { threshold: .5 });
+      counters.forEach(c => obs.observe(c));
     })();
   </script>
 
