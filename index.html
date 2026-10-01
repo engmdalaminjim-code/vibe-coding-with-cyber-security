@@ -15,6 +15,9 @@
     rel="stylesheet"
   />
 
+  <!-- Three.js 3D animation library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
   <style>
     /* ===== কাস্টম প্রপার্টি (রঙ, ফন্ট, স্পেসিং) ===== */
     :root {
@@ -31,6 +34,57 @@
 
       --max-w: 780px;         /* কন্টেন্ট সর্বোচ্চ প্রস্থ */
       --gap:   2.5rem;        /* সেকশনের মধ্যে ফাঁক */
+    }
+
+    /* ===== 3D ব্যাকগ্রাউন্ড ক্যানভাস ===== */
+    #bg3d {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      opacity: .85;
+    }
+
+    /* ===== স্ক্রল-রিভিল অ্যানিমেশন ===== */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ===== কার্ড 3D টিল্ট + গ্লো এফেক্ট ===== */
+    .project-card {
+      transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease;
+      transform-style: preserve-3d;
+    }
+    .project-card:hover {
+      border-color: var(--accent);
+      box-shadow: 0 8px 32px rgba(56, 189, 248, .18),
+                  0 0 0 1px rgba(56, 189, 248, .25);
+    }
+    /* স্কিল ট্যাগে মজার হোভার */
+    .skill-tag {
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+    .skill-tag:hover {
+      transform: translateY(-2px) scale(1.05);
+      box-shadow: 0 4px 12px rgba(56, 189, 248, .2);
+    }
+    /* বাটনে গ্লো */
+    .btn {
+      transition: background .15s, color .15s, box-shadow .25s ease;
+    }
+    .btn:hover {
+      background: var(--accent);
+      color: var(--bg);
+      text-decoration: none;
+      box-shadow: 0 0 20px rgba(56, 189, 248, .45);
     }
 
     /* ===== রিসেট ও বেস স্টাইল ===== */
@@ -373,6 +427,15 @@
 </head>
 <body>
 
+  <!-- ===== 3D ব্যাকগ্রাউন্ড (Three.js) ===== -->
+  <canvas id="bg3d"></canvas>
+
+  <!-- ===== ভয়েস ওয়েলকাম (ব্রাউজার ব্লক করলে ক্লিক করে চালু হবে) ===== -->
+  <div id="voice-hint" style="position:fixed; bottom:1.2rem; right:1.2rem; z-index:99; display:flex; align-items:center; gap:.5rem; background:var(--surface); border:1px solid var(--accent); border-radius:50px; padding:.55rem 1.1rem; cursor:pointer; font-family:var(--font-head); font-size:.78rem; font-weight:600; color:var(--accent); box-shadow:0 0 18px rgba(56,189,248,.3); transition:transform .2s;">
+    🔊 <span id="voice-hint-text">Play welcome voice</span>
+  </div>
+
+
   <!-- ===== নেভিগেশন ===== -->
   <header>
     <div class="container">
@@ -463,8 +526,10 @@
 
       <!-- তৃতীয় গ্রুপ: টুলস -->
       <div class="skill-group">
-        <p class="skill-group-name">Tools &amp; Platforms</p>
+        <p class="skill-group-name">Design &amp; Others</p>
         <div class="skill-tags">
+          <span class="skill-tag">UI/UX Design</span>
+          <span class="skill-tag">Responsive Design</span>
           <span class="skill-tag">Git</span>
           <span class="skill-tag">Linux</span>
           <span class="skill-tag">Scikit-learn</span>
@@ -574,6 +639,162 @@
       <p>Built by Al Amin &mdash; 2026</p>
     </div>
   </footer>
+
+  <script>
+    /* ============================================
+       1) THREE.JS — 3D ব্যাকগ্রাউন্ড অ্যানিমেশন
+       ============================================ */
+    (function () {
+      const canvas = document.getElementById('bg3d');
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+      camera.position.z = 24;
+
+      const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+      /* --- ঘূর্ণায়মান ওয়্যারফ্রেম শেপগুলো --- */
+      const shapes = [];
+      const accentColor = 0x38BDF8;
+
+      // বড় ইকোসাহেড্রন — কেন্দ্রে
+      const bigShape = new THREE.Mesh(
+        new THREE.IcosahedronGeometry(7, 1),
+        new THREE.MeshBasicMaterial({ color: accentColor, wireframe: true, transparent: true, opacity: 0.10 })
+      );
+      bigShape.position.set(9, 2, -8);
+      scene.add(bigShape);
+      shapes.push({ mesh: bigShape, speed: 0.0012 });
+
+      // টরাস — বাম দিকে
+      const torus = new THREE.Mesh(
+        new THREE.TorusGeometry(4, 1.2, 8, 24),
+        new THREE.MeshBasicMaterial({ color: 0x0EA5E9, wireframe: true, transparent: true, opacity: 0.09 })
+      );
+      torus.position.set(-12, -5, -10);
+      scene.add(torus);
+      shapes.push({ mesh: torus, speed: -0.0018 });
+
+      // অক্টাহেড্রন — নিচে
+      const octa = new THREE.Mesh(
+        new THREE.OctahedronGeometry(3.5, 0),
+        new THREE.MeshBasicMaterial({ color: accentColor, wireframe: true, transparent: true, opacity: 0.12 })
+      );
+      octa.position.set(-5, 9, -6);
+      scene.add(octa);
+      shapes.push({ mesh: octa, speed: 0.0024 });
+
+      /* --- ভাসমান পার্টিকেল ফিল্ড --- */
+      const particleCount = 350;
+      const positions = new Float32Array(particleCount * 3);
+      for (let i = 0; i < particleCount; i++) {
+        positions[i * 3]     = (Math.random() - 0.5) * 70;
+        positions[i * 3 + 1] = (Math.random() - 0.5) * 50;
+        positions[i * 3 + 2] = (Math.random() - 0.5) * 40;
+      }
+      const particleGeo = new THREE.BufferGeometry();
+      particleGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+      const particleMat = new THREE.PointsMaterial({
+        color: accentColor, size: 0.12, transparent: true, opacity: 0.5
+      });
+      const particles = new THREE.Points(particleGeo, particleMat);
+      scene.add(particles);
+
+      /* --- মাউস ফলো-আকর্ষণ (interactive) --- */
+      let mouseX = 0, mouseY = 0;
+      document.addEventListener('mousemove', (e) => {
+        mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+        mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+      });
+
+      /* --- অ্যানিমেশন লুপ --- */
+      function animate() {
+        requestAnimationFrame(animate);
+        shapes.forEach(s => {
+          s.mesh.rotation.x += s.speed;
+          s.mesh.rotation.y += s.speed * 1.4;
+        });
+        particles.rotation.y += 0.0004;
+        camera.position.x += (mouseX * 2 - camera.position.x) * 0.03;
+        camera.position.y += (-mouseY * 2 - camera.position.y) * 0.03;
+        camera.lookAt(scene.position);
+        renderer.render(scene, camera);
+      }
+      animate();
+
+      /* --- রিসাইজ হ্যান্ডলার --- */
+      window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      });
+    })();
+
+    /* ============================================
+       2) স্ক্রল-রিভিল অ্যানিমেশন
+       ============================================ */
+    (function () {
+      const targets = document.querySelectorAll(
+        '.project-card, .skill-group, .contact-item, .section-title, .section-desc'
+      );
+      targets.forEach(el => el.classList.add('reveal'));
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12 });
+      targets.forEach(el => observer.observe(el));
+    })();
+
+    /* ============================================
+       3) ভয়েস ওয়েলকাম (Web Speech API)
+       ============================================ */
+    (function () {
+      const hint = document.getElementById('voice-hint');
+      const hintText = document.getElementById('voice-hint-text');
+      const MSG = "Welcome to Al Amin's portfolio website";
+
+      function speak() {
+        if (!('speechSynthesis' in window)) {
+          hintText.textContent = 'Voice not supported';
+          return;
+        }
+        window.speechSynthesis.cancel();
+        const u = new SpeechSynthesisUtterance(MSG);
+        u.rate = 0.95;
+        u.pitch = 1;
+        u.volume = 1;
+        // ইংরেজি ভয়েস বেছে নেয়
+        const voices = window.speechSynthesis.getVoices();
+        const en = voices.find(v => v.lang && v.lang.startsWith('en'));
+        if (en) u.voice = en;
+        window.speechSynthesis.speak(u);
+        hintText.textContent = 'Playing…';
+        u.onend = () => { hintText.textContent = 'Play welcome voice'; };
+      }
+
+      // অটো-প্লে: অনেক ব্রাউজার প্রথম ইন্টার‍্যাকশন ছাড়া ব্লক করে,
+      // তাই চেষ্টা করা হয় — ব্লক হলে ইউজার বাটনে ক্লিক করবে
+      window.addEventListener('load', () => {
+        const trySpeak = speak;
+        trySpeak();
+      });
+
+      hint.addEventListener('click', speak);
+
+      hint.addEventListener('mouseenter', () => {
+        hint.style.transform = 'scale(1.06)';
+      });
+      hint.addEventListener('mouseleave', () => {
+        hint.style.transform = 'scale(1)';
+      });
+    })();
+  </script>
 
 </body>
 </html>
