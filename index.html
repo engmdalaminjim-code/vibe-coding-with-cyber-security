@@ -370,11 +370,25 @@
       flex-direction: column;
       gap: .9rem;
     }
-    .contact-item {
-      display: flex;
-      align-items: baseline;
-      gap: .75rem;
-    }
+      .contact-item {
+        display: flex;
+        align-items: center;
+        gap: .75rem;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        padding: .8rem 1rem;
+        transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+      }
+      .contact-item:hover {
+        transform: translateX(6px);
+        border-color: var(--accent);
+        box-shadow: 0 4px 16px rgba(56, 189, 248, .15);
+      }
+      .contact-icon {
+        font-size: 1.15rem;
+        flex-shrink: 0;
+      }
     .contact-key {
       font-size: .78rem;
       font-weight: 500;
@@ -393,6 +407,143 @@
     }
     .contact-val a:hover {
       color: var(--accent);
+    }
+
+    /* ===== এডুকেশন রোডম্যাপ ===== */
+    .roadmap {
+      position: relative;
+      padding-left: 2rem;
+    }
+    .roadmap-line {
+      position: absolute;
+      left: .55rem;
+      top: .4rem;
+      bottom: .4rem;
+      width: 2px;
+      background: linear-gradient(180deg, var(--accent), transparent);
+      opacity: .5;
+    }
+    .roadmap-item {
+      position: relative;
+      margin-bottom: 1.6rem;
+      perspective: 800px;   /* 3D টিল্টের জন্য */
+    }
+    .roadmap-dot {
+      position: absolute;
+      left: -2rem;
+      top: 1.4rem;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 12px rgba(56,189,248,.6);
+    }
+    .roadmap-dot.future {
+      background: transparent;
+      border: 2px dashed var(--accent);
+      box-shadow: none;
+    }
+    .roadmap-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.2rem 1.4rem;
+      transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease;
+      transform-style: preserve-3d;
+      will-change: transform;
+    }
+    .roadmap-card:hover {
+      border-color: var(--accent);
+      box-shadow: 0 10px 30px rgba(56,189,248,.18);
+    }
+    .roadmap-card.future {
+      border-style: dashed;
+      opacity: .85;
+    }
+    .roadmap-year {
+      font-family: var(--font-head);
+      font-size: .72rem;
+      font-weight: 600;
+      color: var(--accent);
+      letter-spacing: .08em;
+      margin-bottom: .3rem;
+    }
+    .roadmap-title {
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: 1.02rem;
+      margin-bottom: .25rem;
+    }
+    .roadmap-place {
+      font-size: .82rem;
+      color: var(--muted);
+      margin-bottom: .45rem;
+    }
+    .roadmap-desc {
+      font-size: .88rem;
+      color: var(--muted);
+      line-height: 1.6;
+      max-width: 55ch;
+    }
+
+    /* ===== 3D ম্যাপ ফ্রেম ===== */
+    .map-3d-wrap {
+      perspective: 1000px;
+    }
+    .map-3d {
+      transform: rotateX(8deg);
+      transition: transform .4s ease, box-shadow .4s ease;
+      box-shadow: 0 18px 40px rgba(0,0,0,.5);
+    }
+    .map-3d:hover {
+      transform: rotateX(0deg) scale(1.02);
+      box-shadow: 0 24px 50px rgba(56,189,248,.25);
+    }
+
+    /* ===== ভিডিও কার্ড ===== */
+    .videos-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 1rem;
+    }
+    .video-card {
+      display: block;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      text-decoration: none;
+      transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease;
+    }
+    .video-card:hover {
+      text-decoration: none;
+      transform: translateY(-5px) rotateX(4deg);
+      border-color: var(--accent);
+      box-shadow: 0 12px 28px rgba(56,189,248,.2);
+    }
+    .video-thumb {
+      height: 110px;
+      display: grid;
+      place-items: center;
+      font-size: 2.4rem;
+    }
+    .video-title {
+      font-family: var(--font-head);
+      font-weight: 600;
+      font-size: .9rem;
+      color: var(--text);
+      padding: .8rem 1rem .2rem;
+      line-height: 1.4;
+    }
+    .video-meta {
+      font-size: .74rem;
+      color: var(--muted);
+      padding: 0 1rem 1rem;
+    }
+
+    /* মুড বাটন হোভার */
+    .mood-btn:hover {
+      background: rgba(56,189,248,.1) !important;
     }
 
     /* ===== ফুটার ===== */
@@ -430,9 +581,20 @@
   <!-- ===== 3D ব্যাকগ্রাউন্ড (Three.js) ===== -->
   <canvas id="bg3d"></canvas>
 
-  <!-- ===== ভয়েস ওয়েলকাম (ব্রাউজার ব্লক করলে ক্লিক করে চালু হবে) ===== -->
-  <div id="voice-hint" style="position:fixed; bottom:1.2rem; right:1.2rem; z-index:99; display:flex; align-items:center; gap:.5rem; background:var(--surface); border:1px solid var(--accent); border-radius:50px; padding:.55rem 1.1rem; cursor:pointer; font-family:var(--font-head); font-size:.78rem; font-weight:600; color:var(--accent); box-shadow:0 0 18px rgba(56,189,248,.3); transition:transform .2s;">
-    🔊 <span id="voice-hint-text">Play welcome voice</span>
+  <!-- ===== ভয়েস ওয়েলকাম + মুড সিলেক্টর ===== -->
+  <div id="voice-panel" style="position:fixed; bottom:1.2rem; right:1.2rem; z-index:99; display:flex; flex-direction:column; gap:.5rem; align-items:flex-end;">
+    <!-- মুড বাটনগুলো (ডিফল্ট লুকানো) -->
+    <div id="mood-buttons" style="display:none; flex-direction:column; gap:.4rem; background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:.7rem; box-shadow:0 8px 24px rgba(0,0,0,.45);">
+      <button class="mood-btn" data-mood="happy"   style="all:unset; cursor:pointer; font-family:var(--font-head); font-size:.78rem; font-weight:600; color:#FACC15; padding:.35rem .8rem; border-radius:6px; text-align:right;">😊 Excited</button>
+      <button class="mood-btn" data-mood="sad"     style="all:unset; cursor:pointer; font-family:var(--font-head); font-size:.78rem; font-weight:600; color:#93C5FD; padding:.35rem .8rem; border-radius:6px; text-align:right;">😢 Sad</button>
+      <button class="mood-btn" data-mood="calm"    style="all:unset; cursor:pointer; font-family:var(--font-head); font-size:.78rem; font-weight:600; color:#6EE7B7; padding:.35rem .8rem; border-radius:6px; text-align:right;">😌 Calm</button>
+      <button class="mood-btn" data-mood="deep"    style="all:unset; cursor:pointer; font-family:var(--font-head); font-size:.78rem; font-weight:600; color:#C4B5FD; padding:.35rem .8rem; border-radius:6px; text-align:right;">🎙️ Deep</button>
+      <button class="mood-btn" data-mood="robot"   style="all:unset; cursor:pointer; font-family:var(--font-head); font-size:.78rem; font-weight:600; color:#F9A8D4; padding:.35rem .8rem; border-radius:6px; text-align:right;">🤖 Robot</button>
+    </div>
+    <!-- মূল ভয়েস বাটন -->
+    <div id="voice-hint" style="display:flex; align-items:center; gap:.5rem; background:var(--surface); border:1px solid var(--accent); border-radius:50px; padding:.55rem 1.1rem; cursor:pointer; font-family:var(--font-head); font-size:.78rem; font-weight:600; color:var(--accent); box-shadow:0 0 18px rgba(56,189,248,.3); transition:transform .2s;">
+      🔊 <span id="voice-hint-text">Play welcome voice</span>
+    </div>
   </div>
 
 
@@ -596,6 +758,101 @@
     </div>
   </section>
 
+  <!-- ===== এডুকেশন রোডম্যাপ (3D টিল্ট কার্ডসহ) ===== -->
+  <section id="education">
+    <div class="container">
+      <p class="section-label">Education</p>
+      <h2 class="section-title">My Journey</h2>
+      <p class="section-desc">The road so far — where I studied and where I'm headed.</p>
+
+      <div class="roadmap">
+        <div class="roadmap-line"></div>
+
+        <!-- মাইলফলক ১ -->
+        <div class="roadmap-item">
+          <div class="roadmap-dot"></div>
+          <div class="roadmap-card" data-tilt>
+            <p class="roadmap-year">2019 — 2023</p>
+            <p class="roadmap-title">🎓 B.Sc. in Computer Science &amp; Engineering</p>
+            <p class="roadmap-place">Institute Name, Dhaka, Bangladesh</p>
+            <p class="roadmap-desc">Foundations of programming, networking, and databases. Built the first versions of my web and security projects.</p>
+          </div>
+        </div>
+
+        <!-- মাইলফলক ২ -->
+        <div class="roadmap-item">
+          <div class="roadmap-dot"></div>
+          <div class="roadmap-card" data-tilt>
+            <p class="roadmap-year">2024 — Present</p>
+            <p class="roadmap-title">🛡️ M.Sc. in Cyber Security</p>
+            <p class="roadmap-place">Daffodil International University (DIU), Dhaka</p>
+            <p class="roadmap-desc">Specializing in network defense and machine learning for security. Thesis: paraphrase-robust phishing email detection.</p>
+          </div>
+        </div>
+
+        <!-- মাইলফলক ৩ (ভবিষ্যৎ) -->
+        <div class="roadmap-item">
+          <div class="roadmap-dot future"></div>
+          <div class="roadmap-card future" data-tilt>
+            <p class="roadmap-year">Next</p>
+            <p class="roadmap-title">🚀 Security Researcher &amp; Author</p>
+            <p class="roadmap-place">Global · Remote</p>
+            <p class="roadmap-desc">Publishing research, finishing "Vibe Coding with Cyber Security", and building AI-driven defense tools.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ইনস্টিটিউট লোকেশন — 3D ইন্টার‍্যাক্টিভ ম্যাপ -->
+      <div class="map-frame" style="margin-top:2.5rem;">
+        <p style="font-family:var(--font-head); font-weight:600; font-size:.85rem; color:var(--accent); letter-spacing:.06em; margin-bottom:.7rem;">📍 Institute Location — Daffodil International University</p>
+        <div class="map-3d-wrap">
+          <iframe
+            class="map-3d"
+            src="https://www.openstreetmap.org/export/embed.html?bbox=90.3550%2C23.7500%2C90.3950%2C23.7800&amp;layer=mapnik&amp;marker=23.7650%2C90.3750"
+            style="border:0; width:100%; height:300px; display:block; border-radius:8px;"
+            loading="lazy"
+            title="DIU Location Map"></iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ভিডিও রোডম্যাপ সেকশন ===== -->
+  <section id="videos">
+    <div class="container">
+      <p class="section-label">Videos</p>
+      <h2 class="section-title">Learning Roadmap</h2>
+      <p class="section-desc">Video journeys I recommend — cyber security, vibe coding, and the road ahead.</p>
+
+      <div class="videos-grid">
+        <!-- ভিডিও ১ -->
+        <a class="video-card" href="https://www.youtube.com/results?search_query=cyber+security+roadmap+beginner" target="_blank" rel="noopener">
+          <div class="video-thumb" style="background:linear-gradient(135deg,#0EA5E9,#1E2A3A);">🛡️</div>
+          <p class="video-title">Cyber Security Roadmap for Beginners</p>
+          <p class="video-meta">YouTube Playlist</p>
+        </a>
+        <!-- ভিডিও ২ -->
+        <a class="video-card" href="https://www.youtube.com/results?search_query=python+for+cyber+security" target="_blank" rel="noopener">
+          <div class="video-thumb" style="background:linear-gradient(135deg,#FACC15,#1E2A3A);">🐍</div>
+          <p class="video-title">Python for Security &amp; Automation</p>
+          <p class="video-meta">YouTube Playlist</p>
+        </a>
+        <!-- ভিডিও ৩ -->
+        <a class="video-card" href="https://www.youtube.com/results?search_query=ai+assisted+coding+vibe+coding" target="_blank" rel="noopener">
+          <div class="video-thumb" style="background:linear-gradient(135deg,#A78BFA,#1E2A3A);">🤖</div>
+          <p class="video-title">Vibe Coding with AI — Full Guide</p>
+          <p class="video-meta">YouTube Playlist</p>
+        </a>
+        <!-- ভিডিও ৪ -->
+        <a class="video-card" href="https://www.youtube.com/results?search_query=machine+learning+phishing+detection" target="_blank" rel="noopener">
+          <div class="video-thumb" style="background:linear-gradient(135deg,#34D399,#1E2A3A);">🧠</div>
+          <p class="video-title">ML for Phishing Detection</p>
+          <p class="video-meta">YouTube Playlist</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
   <!-- ===== যোগাযোগ সেকশন ===== -->
   <section id="contact">
     <div class="container">
@@ -605,26 +862,31 @@
         Open to research collaborations, internship opportunities, and interesting conversations.
       </p>
 
-      <!-- যোগাযোগের তথ্য -->
+      <!-- যোগাযোগের তথ্য (কালারফুল আইকনসহ) -->
       <div class="contact-block">
         <div class="contact-item">
-          <span class="contact-key">Email</span>
+          <span class="contact-icon" style="color:#EA4335;">✉️</span>
+          <span class="contact-key" style="width:auto;">Email</span>
           <span class="contact-val"><a href="mailto:eng.md.alaminjim@gmail.com">eng.md.alaminjim@gmail.com</a></span>
         </div>
         <div class="contact-item">
-          <span class="contact-key">Phone</span>
+          <span class="contact-icon" style="color:#34A853;">📱</span>
+          <span class="contact-key" style="width:auto;">Phone</span>
           <span class="contact-val"><a href="tel:+8801837684439">+880 1837-684439</a></span>
         </div>
         <div class="contact-item">
-          <span class="contact-key">GitHub</span>
+          <span class="contact-icon" style="color:#E2EAF4;">🐙</span>
+          <span class="contact-key" style="width:auto;">GitHub</span>
           <span class="contact-val"><a href="https://github.com/engmdalaminjim-code" target="_blank" rel="noopener">github.com/engmdalaminjim-code</a></span>
         </div>
         <div class="contact-item">
-          <span class="contact-key">LinkedIn</span>
+          <span class="contact-icon" style="color:#0A66C2;">💼</span>
+          <span class="contact-key" style="width:auto;">LinkedIn</span>
           <span class="contact-val"><a href="https://www.linkedin.com/in/al-aminjim/" target="_blank" rel="noopener">linkedin.com/in/al-aminjim</a></span>
         </div>
         <div class="contact-item">
-          <span class="contact-key">Location</span>
+          <span class="contact-icon" style="color:#38BDF8;">📍</span>
+          <span class="contact-key" style="width:auto;">Location</span>
           <span class="contact-val">Dhaka, Bangladesh</span>
         </div>
       </div>
@@ -757,25 +1019,71 @@
     (function () {
       const hint = document.getElementById('voice-hint');
       const hintText = document.getElementById('voice-hint-text');
-      const MSG = "Welcome to Al Amin's portfolio website";
+      const MSG = "Welcome to Al Amin's portfolio website.";
 
-      function speak() {
+      // সবচেয়ে ভালো ইংরেজি ভয়েস বাছাই (natural tone)
+      function pickBestVoice() {
+        const voices = window.speechSynthesis.getVoices();
+        const preferred = [
+          'Google UK English Female', 'Google UK English Male',
+          'Google US English', 'Microsoft Zira', 'Microsoft Aria',
+          'Microsoft David', 'Daniel', 'Samantha', 'Karen', 'Moira'
+        ];
+        for (const name of preferred) {
+          const v = voices.find(v => v.name.includes(name));
+          if (v) return v;
+        }
+        return voices.find(v => v.lang && v.lang.startsWith('en')) || null;
+      }
+
+      function speak(mood) {
         if (!('speechSynthesis' in window)) {
           hintText.textContent = 'Voice not supported';
           return;
         }
         window.speechSynthesis.cancel();
         const u = new SpeechSynthesisUtterance(MSG);
-        u.rate = 0.95;
-        u.pitch = 1;
+        const best = pickBestVoice();
+        if (best) u.voice = best;
+
+        /* --- মুড অনুযায়ী টোন বদলানো --- */
+        const moods = {
+          happy: { rate: 1.15, pitch: 1.5, label: '😊 Excited' },   // খুশি — দ্রুত ও উঁচু
+          sad:   { rate: 0.65, pitch: 0.55, label: '😢 Sad' },      // দুঃখী — ধীর ও নিচু
+          calm:  { rate: 0.8,  pitch: 1.0, label: '😌 Calm' },      // শান্ত — মসৃণ
+          deep:  { rate: 0.75, pitch: 0.3, label: '🎙️ Deep' },      // গভীর কণ্ঠ
+          robot: { rate: 0.9,  pitch: 2.0, label: '🤖 Robot' }      // রোবটিক — মেশিনি
+        };
+        const cfg = moods[mood] || { rate: 0.85, pitch: 1.05, label: null };
+        u.rate = cfg.rate;
+        u.pitch = cfg.pitch;
         u.volume = 1;
-        // ইংরেজি ভয়েস বেছে নেয়
-        const voices = window.speechSynthesis.getVoices();
-        const en = voices.find(v => v.lang && v.lang.startsWith('en'));
-        if (en) u.voice = en;
         window.speechSynthesis.speak(u);
-        hintText.textContent = 'Playing…';
+        hintText.textContent = 'Playing…' + (cfg.label ? ' ' + cfg.label : '');
         u.onend = () => { hintText.textContent = 'Play welcome voice'; };
+      }
+
+      /* --- মুড প্যানেল খোলা/বন্ধ + মুড সিলেকশন --- */
+      const moodButtons = document.getElementById('mood-buttons');
+      let longPressTimer = null;
+      hint.addEventListener('mousedown', () => {
+        longPressTimer = setTimeout(() => {
+          moodButtons.style.display = moodButtons.style.display === 'flex' ? 'none' : 'flex';
+        }, 450);   // আধা সেকেন্ড চেপে ধরলে মুড মেনু খোলে
+      });
+      hint.addEventListener('mouseup',   () => clearTimeout(longPressTimer));
+      hint.addEventListener('mouseleave',() => clearTimeout(longPressTimer));
+      document.querySelectorAll('.mood-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          speak(btn.dataset.mood);
+        });
+      });
+
+      // ভয়েস লিস্ট দেরিতে লোড হয় — আগে থেকে রেডি করে রাখা
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.getVoices();
+        window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
       }
 
       // অটো-প্লে চেষ্টা: অনেক ব্রাউজার প্রথম ইন্টার‍্যাকশন ছাড়া ব্লক করে,
@@ -792,8 +1100,7 @@
       window.addEventListener('load', () => {
         setTimeout(() => {
           try { speak(); spoken = true; } catch (e) { spoken = false; }
-        }, 800);
-        // যদি অটো-প্লে ব্লক হয়, প্রথম ইন্টার‍্যাকশনে চালাও
+        }, 800);        // যদি অটো-প্লে ব্লক হয়, প্রথম ইন্টার‍্যাকশনে চালাও
         document.addEventListener('click', speakOnce);
         document.addEventListener('keydown', speakOnce);
         window.addEventListener('scroll', speakOnce);
@@ -806,6 +1113,21 @@
       });
       hint.addEventListener('mouseleave', () => {
         hint.style.transform = 'scale(1)';
+      });
+    /* ============================================
+       4) রোডম্যাপ কার্ডে 3D টিল্ট এফেক্ট
+       ============================================ */
+    (function () {
+      document.querySelectorAll('[data-tilt]').forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+          const r = card.getBoundingClientRect();
+          const x = (e.clientX - r.left) / r.width - 0.5;
+          const y = (e.clientY - r.top) / r.height - 0.5;
+          card.style.transform = `rotateY(${x * 10}deg) rotateX(${-y * 10}deg) translateZ(6px)`;
+        });
+        card.addEventListener('mouseleave', () => {
+          card.style.transform = 'rotateY(0) rotateX(0) translateZ(0)';
+        });
       });
     })();
   </script>
