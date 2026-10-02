@@ -143,8 +143,13 @@
 
     /* ===== টপ নেভ ===== */
     header {
+      position: sticky;
+      top: 0;
+      z-index: 90;
       padding: 1.4rem 0 1.2rem;
       border-bottom: 1px solid var(--border);
+      background: rgba(10, 14, 26, .92);
+      backdrop-filter: blur(10px);
     }
     .nav {
       display: flex;
@@ -1895,6 +1900,20 @@
       btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
       btn.addEventListener('mouseenter', () => btn.style.transform = 'scale(1.12)');
       btn.addEventListener('mouseleave', () => btn.style.transform = 'scale(1)');
+
+      /* নেভ লিঙ্কে ক্লিক করলে স্মুথ স্ক্রল (Home সহ) — হেডারের উচ্চতা হিসাব করে */
+      document.querySelectorAll('.nav-links a[href^="#"]').forEach(link => {
+        link.addEventListener('click', (e) => {
+          const id = link.getAttribute('href').slice(1);
+          const target = document.getElementById(id);
+          if (!target) return;
+          e.preventDefault();
+          const headerH = document.querySelector('header').offsetHeight;
+          const top = target.getBoundingClientRect().top + window.scrollY - headerH - 8;
+          window.scrollTo({ top: Math.max(top, 0), behavior: 'smooth' });
+          history.replaceState(null, '', '#');
+        });
+      });
     })();
 
     /* ============================================
